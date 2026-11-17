@@ -1,0 +1,6 @@
+{
+  "name": "Lidia Aparicio — Exclusive Visual Director",
+  "description": "Galería editorial y portfolio de dirección visual, fotografía y cine de autor de Lidia Aparicio (The Silent Gallery).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
