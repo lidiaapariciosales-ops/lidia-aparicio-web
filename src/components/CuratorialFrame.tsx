@@ -7,6 +7,7 @@ interface CuratorialFrameProps {
   onClick?: () => void;
   passepartout?: boolean;
   showCaption?: boolean;
+  fillHeight?: boolean;
   className?: string;
 }
 
@@ -22,6 +23,7 @@ export const CuratorialFrame: React.FC<CuratorialFrameProps> = ({
   onClick,
   passepartout = true,
   showCaption = true,
+  fillHeight = false,
   className = '',
 }) => {
   const aspectClass = ASPECT_CLASSES[slot.aspectRatio];
@@ -29,7 +31,9 @@ export const CuratorialFrame: React.FC<CuratorialFrameProps> = ({
 
   const frameContent = (
     <div
-      className={`relative w-full overflow-hidden ${aspectClass} ${
+      className={`relative w-full overflow-hidden ${
+        fillHeight ? `${aspectClass} sm:aspect-auto sm:h-full sm:min-h-0` : aspectClass
+      } ${
         passepartout
           ? 'bg-[#E8E2D5]/75 p-3 sm:p-5 border border-[#C2B69D]/55'
           : 'bg-[#E8E2D5] border border-[#C2B69D]/45'
@@ -41,7 +45,11 @@ export const CuratorialFrame: React.FC<CuratorialFrameProps> = ({
             src={slot.src}
             alt={slot.alt}
             referrerPolicy="no-referrer"
-            className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.015]"
+            className={`${
+              fillHeight ? 'w-full h-full sm:absolute sm:inset-0' : 'w-full h-full'
+            } object-cover ${
+              slot.framing === 'Retrato' ? 'object-top' : 'object-center'
+            } transition-transform duration-500 ease-out group-hover:scale-[1.015]`}
           />
           {isInteractive && (
             <span
@@ -90,13 +98,15 @@ export const CuratorialFrame: React.FC<CuratorialFrameProps> = ({
   );
 
   return (
-    <figure className={`flex flex-col ${className}`}>
+    <figure className={`flex flex-col ${fillHeight ? 'sm:h-full sm:min-h-0' : ''} ${className}`}>
       {isInteractive ? (
         <button
           type="button"
           onClick={onClick}
           aria-label={`Ampliar lámina: ${slot.title}`}
-          className="group block w-full text-left cursor-pointer"
+          className={`group block w-full text-left cursor-pointer ${
+            fillHeight ? 'sm:flex-1 sm:h-full sm:min-h-0' : ''
+          }`}
         >
           {frameContent}
         </button>

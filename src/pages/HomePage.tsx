@@ -77,23 +77,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
 
           {/* Right Column: Curatorial Trio / Primary Passepartout */}
-          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-stretch">
+          <div className="lg:col-span-6 self-center grid grid-cols-1 sm:grid-cols-12 gap-4 items-stretch">
             <div className="sm:col-span-7 flex flex-col">
               <CuratorialFrame
                 slot={HERO_MEDIA_SLOTS.primary}
-                className="h-full"
-                onClick={() => onNavigate('/universo')}
+                showCaption={false}
+                onClick={() => onNavigate('/sobre-mi')}
               />
             </div>
-            <div className="sm:col-span-5 flex flex-col justify-between gap-4">
+            <div className="sm:col-span-5 flex flex-col sm:grid sm:grid-rows-2 gap-4 sm:h-full">
               <CuratorialFrame
                 slot={HERO_MEDIA_SLOTS.secondaryTop}
                 showCaption={false}
+                fillHeight
                 onClick={() => onNavigate('/universo')}
               />
               <CuratorialFrame
                 slot={HERO_MEDIA_SLOTS.secondaryBottom}
                 showCaption={false}
+                fillHeight
                 onClick={() => onNavigate('/universo')}
               />
             </div>
@@ -155,11 +157,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </button>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-14">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-14 items-start">
           {PROJECTS.map((project, idx) => {
             const collection = COLLECTIONS.find((c) => c.id === project.collectionId);
             return (
-              <article key={project.id} className="flex flex-col">
+              <article
+                key={project.id}
+                className={`flex flex-col ${idx % 2 === 1 ? 'md:mt-10' : ''}`}
+              >
                 <CuratorialFrame
                   slot={project.coverSlot}
                   showCaption={false}

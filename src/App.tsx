@@ -17,6 +17,16 @@ import { SobreMiPage } from './pages/SobreMiPage';
 import { ContactoPage } from './pages/ContactoPage';
 import { LegalPage } from './pages/LegalPage';
 
+const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function stripBasePath(pathname: string): string {
+  if (BASE_PATH && pathname.startsWith(BASE_PATH)) {
+    const stripped = pathname.slice(BASE_PATH.length);
+    return stripped || '/';
+  }
+  return pathname || '/';
+}
+
 interface RouteLocation {
   pathname: string;
   search: string;
@@ -24,14 +34,14 @@ interface RouteLocation {
 
 export default function App() {
   const [location, setLocation] = useState<RouteLocation>(() => ({
-    pathname: window.location.pathname || '/',
+    pathname: stripBasePath(window.location.pathname),
     search: window.location.search || '',
   }));
 
   useEffect(() => {
     const onPopState = () => {
       setLocation({
-        pathname: window.location.pathname || '/',
+        pathname: stripBasePath(window.location.pathname),
         search: window.location.search || '',
       });
       window.scrollTo({ top: 0, behavior: 'auto' });
@@ -45,9 +55,10 @@ export default function App() {
     const normalizedPath = rawPath || '/';
     const normalizedSearch = rawSearch ? `?${rawSearch}` : '';
     const fullUrl = `${normalizedPath}${normalizedSearch}`;
+    const browserUrl = `${BASE_PATH}${fullUrl}` || '/';
 
-    if (window.location.pathname + window.location.search !== fullUrl) {
-      window.history.pushState({}, '', fullUrl);
+    if (window.location.pathname + window.location.search !== browserUrl) {
+      window.history.pushState({}, '', browserUrl);
     }
     setLocation({ pathname: normalizedPath, search: normalizedSearch });
     window.scrollTo({ top: 0, behavior: 'smooth' });
